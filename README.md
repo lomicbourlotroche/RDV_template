@@ -10,23 +10,22 @@ Bienvenue dans BarberBook ! Ce projet est une solution complète de gestion de r
 
 ## 🚀 Démarrage Rapide
 
-### 1. Backend
-```bash
-cd backend
-./mvnw spring-boot:run
-```
-L'API sera disponible sur `http://localhost:8080`.
+## 🌍 Mise en Production
 
-### 2. Frontend Web
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Le site sera disponible sur `http://localhost:5173`.
+Le projet est conçu pour être "Production Ready" avec quelques ajustements :
 
-### 3. Mobile
-Ouvrez le dossier `/mobile` dans Android Studio et lancez le projet sur un émulateur.
+### 1. Base de données
+Actuellement, le projet utilise **H2** (en mémoire). Pour la production :
+- Changez `application.properties` pour utiliser **PostgreSQL** ou **MySQL**.
+- Recommandation : Utilisez **Supabase** pour une base de données cloud gratuite et rapide.
 
-## 📖 Glossaire
-Consultez le fichier [GLOSSAIRE.md](./GLOSSAIRE.md) pour comprendre les différences entre Kotlin et JavaScript !
+### 2. Sécurité
+- La suppression des créneaux est **strictement** limitée à l'usage du numéro de téléphone comme identifiant unique.
+- Le Backend renvoie désormais des messages clairs (Succès/Erreur) pour guider l'utilisateur.
+
+## 🛑 Problème GitHub "Repository not found" ?
+
+Si vous avez cette erreur au moment du `push` :
+1. Allez sur [github.com/new](https://github.com/new).
+2. **CRÉEZ** impérativement un dépôt nommé `BarberBook` (ne cochez rien d'autre).
+3. Une fois créé, relancez : `git push -u origin main`.

@@ -40,12 +40,20 @@ function App() {
   };
 
   const handleCancel = (phone) => {
+    if (!phone) return alert("Veuillez entrer votre numéro.");
+
     fetch(`http://localhost:8080/api/rendezvous/${phone}`, {
       method: 'DELETE'
-    }).then(() => {
-      alert("RDV Supprimé !");
-      setStep(0);
-    });
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert(data.message);
+          setStep(0);
+        } else {
+          alert(data.message);
+        }
+      });
   };
 
   return (
@@ -71,9 +79,9 @@ function App() {
       {step === 1 && (
         <section>
           <h2>Étape 1 : Vos Informations</h2>
-          <input placeholder="Nom" onChange={e => setFormData({...formData, clientName: e.target.value})} /><br/>
-          <input placeholder="Prénom" onChange={e => setFormData({...formData, clientFirstName: e.target.value})} /><br/>
-          <input placeholder="Téléphone" onChange={e => setFormData({...formData, phoneNumber: e.target.value})} /><br/>
+          <input placeholder="Nom" onChange={e => setFormData({ ...formData, clientName: e.target.value })} /><br />
+          <input placeholder="Prénom" onChange={e => setFormData({ ...formData, clientFirstName: e.target.value })} /><br />
+          <input placeholder="Téléphone" onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })} /><br />
           <button onClick={() => setStep(2)}>Suivant</button>
         </section>
       )}
@@ -83,7 +91,7 @@ function App() {
           <h2>Étape 2 : Votre Formule</h2>
           {services.map(s => (
             <button key={s.name} onClick={() => {
-              setFormData({...formData, serviceName: s.name, price: s.price});
+              setFormData({ ...formData, serviceName: s.name, price: s.price });
               setStep(3);
             }}>
               {s.name} - {s.price}€
@@ -97,7 +105,7 @@ function App() {
           <h2>Étape 3 : Choisissez le Créneau</h2>
           {slots.map(s => (
             <button key={s} onClick={() => {
-              setFormData({...formData, timeSlot: s});
+              setFormData({ ...formData, timeSlot: s });
               handleBooking();
             }}>{s}</button>
           ))}

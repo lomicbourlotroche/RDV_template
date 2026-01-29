@@ -19,10 +19,15 @@ class RendezVousController(val repository: RendezVousRepository) {
     @PostMapping
     fun create(@RequestBody rdv: RendezVous): RendezVous = repository.save(rdv)
 
-    // Supprimer un RDV avec son numéro de téléphone (Sécurité demandée)
+    // Supprimer un RDV avec son numéro de téléphone uniquement (Strict)
     @DeleteMapping("/{phoneNumber}")
     @Transactional
-    fun deleteByPhone(@PathVariable phoneNumber: String) {
+    fun deleteByPhone(@PathVariable phoneNumber: String): Map<String, String> {
+        val existing = repository.findByPhoneNumber(phoneNumber)
+        if (existing.isEmpty()) {
+            return mapOf("status" to "error", "message" to "Aucun rendez-vous trouvé pour ce numéro.")
+        }
         repository.deleteByPhoneNumber(phoneNumber)
+        return mapOf("status" to "success", "message" to "Rendez-vous supprimé avec succès.")
     }
 }
